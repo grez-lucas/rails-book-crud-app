@@ -1,24 +1,49 @@
-# README
+# BOOK REVEW APP
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a simple RoR app for CRUD operations with a PostgreSQL server. For local development, please follow these instructioins.
 
-Things you may want to cover:
+# Ruby, Rails & PostgreSQL
 
-* Ruby version
+To begin, make sure you have Ruby and Rails installed in your system. Visit the official Ruby website [Ruby Docs](https://www.ruby-lang.org/en/) and follow the instructions to install Ruby. Once Ruby is installed, open your command line and run the following command to install Rails:
 
-* System dependencies
+```bash
+gem install rails
+```
 
-* Configuration
+Next, install PostgreSQL by visiting the official PostgreSQL website [](https://www.postgresql.org/) and following the instructions for your operating system.
 
-* Database creation
+## Configure Database Connection
 
-* Database initialization
+The file `config/database.yml` contains configurations for development, test and production databases. Modify this configuration if needed for the development database to match your PostgreSQL setup.
 
-* How to run the test suite
+For example:
 
-* Services (job queues, cache servers, search engines, etc.)
+```
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: your_username
+  password: your_password
+  host: localhost
+```
 
-* Deployment instructions
+### Set up the database
 
-* ...
+Now set up the PostgreSQL database. Run the following command:
+
+```bash
+rails db:create
+```
+
+This will create development and test databases for the application.
+
+## Start the Server
+
+To run the application, run the following command:
+
+```bash
+rails server
+```
+
+This will start the application locally. You can access it by visiting `http://localhost:3000` in your web browser.
