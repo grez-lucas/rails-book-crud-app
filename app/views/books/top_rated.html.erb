@@ -1,0 +1,17 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Top 10 Rated Books</h1>
+
+<div id="top-rated-books">
+  <% @books.each_with_index do |book, index| %>
+    <div class="book-entry">
+      <h3><%= "#{index + 1}. #{book.name}" %></h3>
+      <p><strong>Author:</strong> <%= book.author.name %></p>
+      <p><strong>Average Score:</strong> <%= book.average_score.round(1) %></p>
+      <p><strong>Publication Date:</strong> <%= book.publication_date %></p>
+      <%= link_to "Show this book", book %>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to "Back to Books", books_path %>

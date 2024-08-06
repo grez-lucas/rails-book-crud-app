@@ -1,5 +1,22 @@
 class BooksController < ApplicationController
   before_action :set_book, only: %i[ show edit update destroy ]
+  
+  def top_selling
+    @books = Book.joins(:sales)
+                 .select('books.*, SUM(sales.sales) as total_sales')
+                 .group('books.id')
+                 .order('total_sales DESC')
+                 .page(params[:page])
+                 .per(10)
+  end
+  
+  def top_rated
+    @books = Book.joins(:reviews)
+                 .select('books.*, AVG(reviews.score) as average_score')
+                 .group('books.id')
+                 .order('average_score DESC')
+                 .limit(10)
+  end
 
   # GET /books or /books.json
   def index

@@ -1,0 +1,19 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Top 50 Selling Books</h1>
+
+<div id="top-selling-books">
+  <% @books.each_with_index do |book, index| %>
+    <div class="book-entry">
+      <h3><%= "#{index + 1 + (params[:page].to_i - 1) * 10}. #{book.name}" %></h3>
+      <p><strong>Author:</strong> <%= book.author.name %></p>
+      <p><strong>Total Sales:</strong> <%= book.total_sales %></p>
+      <p><strong>Publication Date:</strong> <%= book.publication_date %></p>
+      <%= link_to "Show this book", book %>
+    </div>
+  <% end %>
+</div>
+
+<%= paginate @books %>
+
+<%= link_to "Back to Books", books_path %>

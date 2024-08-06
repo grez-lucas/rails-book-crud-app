@@ -1,22 +1,28 @@
 <div id="<%= dom_id author %>">
-  <p>
-    <strong>Name:</strong>
-    <%= author.name %>
-  </p>
+  <h1><%= author.name %></h1>
+<p><strong>Date of Birth:</strong> <%= author.date_of_birth %></p>
+<p><strong>Country of Origin:</strong> <%= author.country_of_origin %></p>
+<p><strong>Description:</strong> <%= author.description %></p>
 
-  <p>
-    <strong>Date of birth:</strong>
-    <%= author.date_of_birth %>
-  </p>
+<h2>Author Statistics</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Number of Published Books</th>
+      <th>Average Book Score</th>
+      <th>Total Sales</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= @book_count %></td>
+      <td><%= @average_score.round(1) %></td>
+      <td><%= number_to_currency(@total_sales) %></td>
+    </tr>
+  </tbody>
+</table>
 
-  <p>
-    <strong>Country of origin:</strong>
-    <%= author.country_of_origin %>
-  </p>
+<%= link_to 'Back to Authors', authors_path %>
 
-  <p>
-    <strong>Short description:</strong>
-    <%= author.short_description %>
-  </p>
 
 </div>
