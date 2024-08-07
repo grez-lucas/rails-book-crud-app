@@ -13,7 +13,7 @@
 
   <div>
     <%= form.label :author_id, style: "display: block" %>
-    <%= form.text_field :author_id %>
+    <%= form.collection_select :author_id, @possible_authors, :id, :name, prompt: 'Select an Author' %>
   </div>
 
   <div>
