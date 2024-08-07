@@ -36,6 +36,8 @@ class BooksController < ApplicationController
 
   # GET /books/1/edit
   def edit
+    @possible_authors = Author.all
+
   end
 
   # POST /books or /books.json

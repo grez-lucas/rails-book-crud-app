@@ -11,9 +11,9 @@
     </div>
   <% end %>
 
-  <div>
+  <div class="field">
     <%= form.label :book_id, style: "display: block" %>
-    <%= form.text_field :book_id %>
+    <%= form.collection_select :book_id, @possible_books, :id, :name, prompt: "Select a book" %>
   </div>
 
   <div>
