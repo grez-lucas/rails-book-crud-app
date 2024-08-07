@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
+  root 'home#index'
   resources :sales
   resources :reviews
   resources :books
   resources :authors
-  get 'books/top_selling', to: 'books#top_selling'
-  get 'books/top_rated', to: 'books#top_rated'
+  get 'books/top_selling', to: 'books#top_selling', as: 'top_selling_books'
+  get 'books/top_rated', to: 'books#top_rated', as: 'top_rated_books'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
