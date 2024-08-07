@@ -13,10 +13,12 @@ class ReviewsController < ApplicationController
   # GET /reviews/new
   def new
     @review = Review.new
+    @possible_books = Book.all
   end
 
   # GET /reviews/1/edit
   def edit
+    @possible_books = Book.all
   end
 
   # POST /reviews or /reviews.json
