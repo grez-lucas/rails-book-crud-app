@@ -1,0 +1,27 @@
+<% if sales.any? %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Book</th>
+        <th>Year</th>
+        <th>Sales</th>
+        <th colspan="3">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% sales.each do |sale| %>
+        <tr>
+          <td><%= link_to sale.book.name, sale.book %></td>
+          <td><%= sale.year.strftime("%Y") %></td>
+          <td><%= number_with_delimiter(sale.sales, delimiter: ',') %></td>
+          <td><%= link_to 'Show', sale %></td>
+          <td><%= link_to 'Edit', edit_sale_path(sale) %></td>
+          <td><%= link_to 'Destroy', sale, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No sales records found.</p>
+<% end %>
