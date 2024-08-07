@@ -30,10 +30,14 @@ class BooksController < ApplicationController
   # GET /books/new
   def new
     @book = Book.new
+
+    @possible_authors = Author.all
   end
 
   # GET /books/1/edit
   def edit
+    @possible_authors = Author.all
+
   end
 
   # POST /books or /books.json

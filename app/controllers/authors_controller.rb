@@ -11,16 +11,16 @@ class AuthorsController < ApplicationController
     @author = Author.find(params[:id])
 
     # Calcula el número de libros publicados
-    @book_count = author.books.count
+    @book_count = @author.books.count
 
     # Calcula la puntuación promedio de los libros del autor
-    @average_score = author.books.joins(:reviews)
+    @average_score = @author.books.joins(:reviews)
                                 .average('reviews.score')
                                 .to_f
     @average_score = @average_score.nan? ? 0 : @average_score
 
     # Calcula las ventas totales de los libros del autor
-    @total_sales = author.books.joins(:sales)
+    @total_sales = @author.books.joins(:sales)
                               .sum('sales.sales')
   end
 

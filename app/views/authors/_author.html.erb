@@ -16,7 +16,7 @@
   <tbody>
     <tr>
       <td><%= @book_count %></td>
-      <td><%= @average_score.round(1) %></td>
+      <td><%= @average_score == nil ? 0 : @average_score.round(1) %></td>
       <td><%= number_to_currency(@total_sales) %></td>
     </tr>
   </tbody>

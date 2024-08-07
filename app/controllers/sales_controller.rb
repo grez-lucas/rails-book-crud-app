@@ -13,10 +13,13 @@ class SalesController < ApplicationController
   # GET /sales/new
   def new
     @sale = Sale.new
+
+    @possible_books = Book.all
   end
 
   # GET /sales/1/edit
   def edit
+    @possible_books = Book.all
   end
 
   # POST /sales or /sales.json
