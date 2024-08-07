@@ -5,10 +5,13 @@
 <div id="top-selling-books">
   <% @books.each_with_index do |book, index| %>
     <div class="book-entry">
-      <h3><%= "#{index + 1 + (params[:page].to_i - 1) * 10}. #{book.name}" %></h3>
+      <% page_number = params[:page].to_i %>
+      <% # Ajustar el índice para la primera página y las siguientes páginas %>
+      <% adjusted_index = index + 1 + (page_number > 0 ? (page_number - 1) * 10 : 0) %>
+      <h3><%= "#{adjusted_index}. #{book.name}" %></h3>
       <p><strong>Author:</strong> <%= book.author.name %></p>
       <p><strong>Total Sales:</strong> <%= book.total_sales %></p>
-      <p><strong>Publication Date:</strong> <%= book.publication_date %></p>
+      <p><strong>Publication Date:</strong> <%= book.date_of_publication %></p>
       <%= link_to "Show this book", book %>
     </div>
   <% end %>

@@ -8,7 +8,7 @@
       <h3><%= "#{index + 1}. #{book.name}" %></h3>
       <p><strong>Author:</strong> <%= book.author.name %></p>
       <p><strong>Average Score:</strong> <%= book.average_score.round(1) %></p>
-      <p><strong>Publication Date:</strong> <%= book.publication_date %></p>
+      <p><strong>Publication Date:</strong> <%= book.date_of_publication %></p>
       <%= link_to "Show this book", book %>
     </div>
   <% end %>

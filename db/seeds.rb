@@ -18,13 +18,13 @@ end
 
 # Crear 300 libros, asignando un autor al azar a cada uno
 300.times do
-  author = Author.order('RANDOM()').first  # Get a random author
+  author = Author.order('RANDOM()').first  # Obtener un autor al azar
   book = Book.create!(
     name: Faker::Book.title,
     summary: Faker::Lorem.paragraph,
     date_of_publication: Faker::Date.between(from: '1900-01-01', to: Date.today),
     number_of_sales: Faker::Number.between(from: 1000, to: 500000),
-    author_id: author.id  # Use author ID
+    author_id: author.id  # Usar el ID del autor
   )
 
   # Crear entre 1 y 10 reseñas para cada libro
@@ -33,7 +33,7 @@ end
       book: book,
       review: Faker::Lorem.paragraph,
       score: Faker::Number.between(from: 1, to: 5),
-      number_of_upvotes: Faker::Number.between(from: 0, to: 100)  # Correct attribute name
+      number_of_upvotes: Faker::Number.between(from: 0, to: 100)
     )
   end
 
@@ -41,7 +41,7 @@ end
   5.times do |i|
     Sale.create!(
       book: book,
-      year: Date.today.year - i,
+      year: Faker::Date.between(from: Date.new(Date.today.year - i, 1, 1), to: Date.new(Date.today.year - i, 12, 31)),
       sales: Faker::Number.between(from: 1000, to: 100000)
     )
   end
