@@ -1,14 +1,18 @@
 <p style="color: green"><%= notice %></p>
 
 <h1>Books</h1>
+<%= form_with url: books_path, method: :get, local: true do |form| %>
+  <div class="field">
+    <%= form.label :query, "Search by Summary:" %>
+    <%= form.text_field :query, value: params[:query], placeholder: "Enter keywords..." %>
+  </div>
+  <div class="actions">
+    <%= form.submit "Search" %>
+  </div>
+<% end %>
 
-<div id="books">
-  <% @books.each do |book| %>
-    <%= render book %>
-    <p>
-      <%= link_to "Show this book", book %>
-    </p>
-  <% end %>
-</div>
+<%= render 'books_list' %>
 
 <%= link_to "New book", new_book_path %>
+
+<%= paginate @books %>
