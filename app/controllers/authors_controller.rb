@@ -4,6 +4,18 @@ class AuthorsController < ApplicationController
   # GET /authors or /authors.json
   def index
     @authors = Author.all
+    case params[:sort]
+    when 'name'
+      @authors = @authors.order(:name)
+    when 'books_count'
+      @authors = @authors.left_joins(:books).group(:id).order('COUNT(books.id) DESC')
+    when 'average_score'
+      @authors = @authors.left_joins(books: :reviews).group(:id).order('AVG(reviews.score) DESC')
+    when 'total_sales'
+      @authors = @authors.left_joins(books: :sales).group(:id).order('SUM(sales.sales) DESC')
+    when 'date_of_birth'
+      @authors = @authors.order(:date_of_birth)
+    end
   end
 
   # GET /authors/1 or /authors/1.json

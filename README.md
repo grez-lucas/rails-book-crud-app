@@ -49,10 +49,9 @@ default: &default
 
 ### Set up the database
 
-Now set up the PostgreSQL database. If you're running a local PostgreSQL service, make sure it's running, if you're working with Docker, make sure to run `docker compose up` beforehand to have the PostgreSQL container up. 
+Now set up the PostgreSQL database. If you're running a local PostgreSQL service, make sure it's running, if you're working with Docker, make sure to run `docker compose up` beforehand to have the PostgreSQL container up.
 
 Run the following command:
-
 
 ```bash
 rails db:create
