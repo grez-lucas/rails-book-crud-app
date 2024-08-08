@@ -36,8 +36,6 @@ Run the following command:
 
 ```bash
 rails db:create
-rails db:migrate
-rails db:seed
 ```
 
 This will create development and test databases for the application.
