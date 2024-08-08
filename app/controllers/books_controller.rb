@@ -2,6 +2,7 @@ class BooksController < ApplicationController
   before_action :set_book, only: %i[ show edit update destroy ]
   
   def top_selling
+    session[:top_selling_books_ids] = nil
     # Verifica si ya tenemos los IDs de los 50 mejores libros en la sesión
     if session[:top_selling_books_ids].blank?
       # Selecciona los 50 libros más vendidos
@@ -15,7 +16,6 @@ class BooksController < ApplicationController
       # Guarda los IDs en la sesión
       session[:top_selling_books_ids] = top_books_ids
     end
-
     # Recupera los libros usando los IDs guardados en la sesión
     @books = Book.where(id: session[:top_selling_books_ids])
                  .joins(:sales)
@@ -31,11 +31,14 @@ class BooksController < ApplicationController
                                 .sum('sales.sales')[book.author_id] || 0
 
       # Verifica si el libro estuvo en el top 5 en su año de publicación
-      top_5_year_sales = Sale.where(year: book.date_of_publication)
-                             .group(:book_id)
-                             .order('SUM(sales.sales) DESC')
-                             .limit(5)
-                             .pluck(:book_id)
+      year_of_publication = book.date_of_publication.year
+      top_5_year_sales = Sale.joins(:book)
+                         .where("EXTRACT(YEAR FROM date_of_publication) = ?", year_of_publication)
+                         .group(:book_id)
+                         .order('SUM(sales.sales) DESC')
+                         .limit(5)
+                         .pluck(:book_id)
+
 
       book.attributes.merge(
         'total_sales' => book.total_sales,
