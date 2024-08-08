@@ -4,6 +4,29 @@ class AuthorsController < ApplicationController
   # GET /authors or /authors.json
   def index
     @authors = Author.all
+    # Filtering
+    if params[:name].present?
+      @authors = @authors.where("name ILIKE ?", "%#{params[:name]}%")
+    end  
+    if params[:books_count].present?
+      @authors = @authors.left_joins(:books).group(:id)
+                         .having("COUNT(books.id) >= ?", params[:books_count].to_i)
+    end
+    if params[:average_score].present?
+      @authors = @authors.left_joins(books: :reviews).group(:id)
+                         .having("AVG(reviews.score) >= ?", params[:average_score].to_f)
+    end
+    if params[:total_sales].present?
+      @authors = @authors.left_joins(books: :sales).group(:id)
+                         .having("SUM(sales.sales) >= ?", params[:total_sales].to_i)
+    end
+    if params[:date_of_birth].present?
+      @authors = @authors.where("EXTRACT(YEAR FROM date_of_birth) >= ?", params[:date_of_birth].to_i)
+    end
+    if params[:country_of_origin].present?
+      @authors = @authors.where("country_of_origin ILIKE ?", "%#{params[:country_of_origin]}%")
+    end
+
     case params[:sort]
     when 'name'
       @authors = @authors.order(:name)
