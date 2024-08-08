@@ -2,16 +2,58 @@
 
 <h1>Top 10 Rated Books</h1>
 
-<div id="top-rated-books">
-  <% @books.each_with_index do |book, index| %>
-    <div class="book-entry">
-      <h3><%= "#{index + 1}. #{book.name}" %></h3>
-      <p><strong>Author:</strong> <%= book.author.name %></p>
-      <p><strong>Average Score:</strong> <%= book.average_score.round(1) %></p>
-      <p><strong>Publication Date:</strong> <%= book.date_of_publication %></p>
-      <%= link_to "Show this book", book %>
-    </div>
-  <% end %>
-</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th><%= link_to '#', "/top_rated?sort=position&direction=#{params[:direction] == 'asc' ? 'desc' : 'asc'}" %></th>
+      <th><%= link_to 'Book Name', "/top_rated?sort=name&direction=#{params[:direction] == 'asc' ? 'desc' : 'asc'}" %></th>
+      <th><%= link_to 'Author', "/top_rated?sort=author&direction=#{params[:direction] == 'asc' ? 'desc' : 'asc'}" %></th>
+      <th><%= link_to 'Average Score', "/top_rated?sort=average_score&direction=#{params[:direction] == 'asc' ? 'desc' : 'asc'}" %></th>
+      <th><%= link_to 'Publication Date', "/top_rated?sort=date_of_publication&direction=#{params[:direction] == 'asc' ? 'desc' : 'asc'}" %></th>
+      <th>Highest Rated Review</th>
+      <th>Lowest Rated Review</th>
+      <th>Most Upvoted Review</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @books.each_with_index do |book, index| %>
+      <% highest_rated_review = book.reviews.order(score: :desc).first %>
+      <% lowest_rated_review = book.reviews.order(score: :asc).first %>
+      <% most_upvoted_review = book.reviews.order(number_of_upvotes: :desc).first %>
+
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= book.name %></td>
+        <td><%= book.author.name %></td>
+        <td><%= book.average_score.round(1) %></td>
+        <td><%= book.date_of_publication.strftime("%B %d, %Y") %></td>
+        <td>
+          <% if highest_rated_review %>
+            <%= highest_rated_review.review %> - <strong>Score:</strong> <%= highest_rated_review.score %> (<%= highest_rated_review.number_of_upvotes %> upvotes)
+          <% else %>
+            N/A
+          <% end %>
+        </td>
+        <td>
+          <% if lowest_rated_review %>
+            <%= lowest_rated_review.review %> - <strong>Score:</strong> <%= lowest_rated_review.score %> (<%= lowest_rated_review.number_of_upvotes %> upvotes)
+          <% else %>
+            N/A
+          <% end %>
+        </td>
+        <td>
+          <% if most_upvoted_review %>
+            <%= most_upvoted_review.review %> - <strong>Score:</strong> <%= most_upvoted_review.score %> (<%= most_upvoted_review.number_of_upvotes %> upvotes)
+          <% else %>
+            N/A
+          <% end %>
+        </td>
+        <td><%= link_to "Show this book", book %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <%= link_to "Back to Books", books_path %>

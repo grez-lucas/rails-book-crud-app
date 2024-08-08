@@ -2,21 +2,37 @@
 
 <h1>Top 50 Selling Books</h1>
 
-<div id="top-selling-books">
-  <% @books.each_with_index do |book, index| %>
-    <div class="book-entry">
-      <% page_number = params[:page].to_i %>
-      <% # Ajustar el índice para la primera página y las siguientes páginas %>
-      <% adjusted_index = index + 1 + (page_number > 0 ? (page_number - 1) * 10 : 0) %>
-      <h3><%= "#{adjusted_index}. #{book.name}" %></h3>
-      <p><strong>Author:</strong> <%= book.author.name %></p>
-      <p><strong>Total Sales:</strong> <%= book.total_sales %></p>
-      <p><strong>Publication Date:</strong> <%= book.date_of_publication %></p>
-      <%= link_to "Show this book", book %>
-    </div>
-  <% end %>
-</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>
+        <%= link_to 'Name', "/top_sellings?sort=name&direction=#{params[:direction] == 'asc' ? 'desc' : 'asc'}" %>
+      </th>
+      <th>
+        <%= link_to 'Total Sales', "/top_sellings?sort=total_sales&direction=#{params[:direction] == 'asc' ? 'desc' : 'asc'}" %>
+      </th>
+      <th>
+        <%= link_to 'Author Sales', "/top_sellings?sort=author_sales&direction=#{params[:direction] == 'asc' ? 'desc' : 'asc'}" %>
+      </th>
+      <th>
+        <%= link_to 'Publication Date', "/top_sellings?sort=date_of_publication&direction=#{params[:direction] == 'asc' ? 'desc' : 'asc'}" %>
+      </th>
+      <th>Top 5 in Year</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @books.each_with_index do |book, index| %>
+      <tr>
+        <td><%= "#{index + 1}. #{book['name']}" %></td>
+        <td><%= number_to_currency(book['total_sales']) %></td>
+        <td><%= number_to_currency(book['total_author_sales']) %></td>
+        <td><%= book['date_of_publication'] %></td>
+        <td><%= book['top_5_year_sales'] ? 'Yes' : 'No' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <%= paginate @books %>
 
-<%= link_to "Back to Books", books_path %>
+<%= link_to "Back to Books", "/books" %>
