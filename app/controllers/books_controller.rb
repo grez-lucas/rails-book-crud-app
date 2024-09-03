@@ -1,6 +1,12 @@
 class BooksController < ApplicationController
   before_action :set_book, only: %i[ show edit update destroy ]
-  
+
+  def create_index
+    Book.__opensearch__.create_index!(force: true)
+    Book.import
+    render json: { message: 'Index created and books imported successfully' }
+  end
+
   def top_selling
     session[:top_selling_books_ids] = nil
     # Verifica si ya tenemos los IDs de los 50 mejores libros en la sesión
@@ -111,6 +117,7 @@ class BooksController < ApplicationController
     @query = params[:query]
     @books = Book.search_by_summary(@query).page(params[:page]).per(10)
   end
+
 
   # GET /books/1 or /books/1.json
   def show
