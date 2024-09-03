@@ -45,9 +45,8 @@ gem 'kaminari'
 
 gem 'faker'
 
-gem 'opensearch-rails'
-gem 'opensearch-model'
-
+gem 'opensearch-model', github: 'compliance-innovations/opensearch-rails'
+gem 'opensearch-rails', github: 'compliance-innovations/opensearch-rails'
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"

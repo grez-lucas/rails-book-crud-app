@@ -22,7 +22,7 @@ services:
     depends_on:
       - db
       - opensearch
-    environment:z
+    environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/rails_book_crud_app_development
       OPENSEARCH_URL: http://opensearch:9200
     tty: true

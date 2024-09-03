@@ -1,3 +1,13 @@
+GIT
+  remote: https://github.com/compliance-innovations/opensearch-rails.git
+  revision: 8b0af5b211281e080858d93e8baa8912950e05a2
+  specs:
+    opensearch-model (1.1.0)
+      activesupport (> 3)
+      hashie
+      opensearch-ruby (>= 2)
+    opensearch-rails (1.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -103,8 +113,14 @@ GEM
     erubi (1.13.0)
     faker (3.4.2)
       i18n (>= 1.8.11, < 2)
+    faraday (2.11.0)
+      faraday-net_http (>= 2.0, < 3.4)
+      logger
+    faraday-net_http (3.3.0)
+      net-http
     globalid (1.2.1)
       activesupport (>= 6.1)
+    hashie (5.0.0)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.0.1)
@@ -144,7 +160,10 @@ GEM
     mini_mime (1.1.5)
     minitest (5.24.1)
     msgpack (1.7.2)
+    multi_json (1.15.0)
     mutex_m (0.2.0)
+    net-http (0.4.1)
+      uri
     net-imap (0.4.14)
       date
       net-protocol
@@ -169,6 +188,9 @@ GEM
       racc (~> 1.4)
     nokogiri (1.16.7-x86_64-linux)
       racc (~> 1.4)
+    opensearch-ruby (3.4.0)
+      faraday (>= 1.0, < 3)
+      multi_json (>= 1.0)
     pg (1.5.7)
     pg (1.5.7-x64-mingw-ucrt)
     psych (5.1.2)
@@ -250,6 +272,7 @@ GEM
       concurrent-ruby (~> 1.0)
     tzinfo-data (1.2024.1)
       tzinfo (>= 1.0.0)
+    uri (0.13.1)
     web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -281,6 +304,8 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   kaminari
+  opensearch-model!
+  opensearch-rails!
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.1.3, >= 7.1.3.4)
