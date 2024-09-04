@@ -75,5 +75,5 @@ Rails.application.configure do
   config.action_controller.raise_on_missing_callback_actions = true
 
   # Redis cache store configuration
-  config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] || "redis://localhost:6379/0" }
+  config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
 end

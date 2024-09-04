@@ -45,14 +45,17 @@ class AuthorsController < ApplicationController
   def show
     author_cache_key = "author_#{params[:id]}_details"
 
-    author_data, source = fetch_author_data_with_cache(author_cache_key)
+    author_data = Rails.cache.fetch(author_cache_key, expires_in: 12.hours) do
+      data = fetch_author_data
+      data
+    end
 
     @book_count = author_data[:book_count].to_i
     @average_score = author_data[:average_score]
     @total_sales = author_data[:total_sales]
 
-    # Log the source of said info
-    Rails.logger.info "Author data fetched from: #{source}"
+    source = Rails.cache.exist?(author_cache_key) ? "redis" : "database (no cache)"
+    Rails.logger.info "Author data fetched from #{source}"
   end
 
   # GET /authors/new
@@ -104,22 +107,6 @@ class AuthorsController < ApplicationController
 
   private
 
-  def fetch_author_data_with_cache(cache_key)
-    data =Rails.cache.fetch(cache_key, expires_in: 12.hours) do
-      [ fetch_author_data, "database" ]
-    end
-
-    # Ensure returned data is a Hash before accesing keys
-    if data.is_a?(Array) && data.first.is_a?(Hash)
-      return data.first, "redis"
-    else
-      return fetch_author_data, "database (fallback)"
-    end
-
-  rescue Redis::CannotConnectError
-      return fetch_author_data, "database (fallback)"
-  end
-
   def fetch_author_data
     {
       author: @author.attributes,
@@ -149,8 +136,6 @@ class AuthorsController < ApplicationController
   end
 
   def invalidate_author_cache
-    Rails.cache.delete("author_#{params[:id]}_details")
-  rescue Redis::CannotConnectError
-    Rails.logger.warn('No Redis instance found, skipping cache invalidation...')
+    Rails.cache.delete("author_#{params[:id]}_details") # Rails.cache handles the case where no cache is found
   end
 end
