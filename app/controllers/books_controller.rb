@@ -64,13 +64,15 @@ class BooksController < ApplicationController
 
     # Log source of query
     source = Rails.cache.exist?(cache_key) ? "redis" : "database (no cache)"
-    Rails.logger.info "Top selling data fetched from #{source}"
+    Rails.logger.info "Top selling books data fetched from #{source}"
   end
   
   def top_rated
-    # Verifica si ya tenemos los IDs de los 10 mejores libros en la sesión
-    if session[:top_rated_books_ids].blank?
-      # Selecciona los 10 libros con la puntuación promedio más alta
+    cache_key = "top_rated_books"
+
+
+    @books = Rails.cache.fetch(cache_key, expires_in: 12.hours) do
+      
       top_books_ids = Book.joins(:reviews)
                           .select('books.id')
                           .group('books.id')
@@ -78,16 +80,12 @@ class BooksController < ApplicationController
                           .limit(10)
                           .pluck(:id)
   
-      # Guarda los IDs en la sesión
-      session[:top_rated_books_ids] = top_books_ids
+      @books = Book.where(id: top_books_ids)
+                   .joins(:reviews)
+                   .select('books.id, books.name, books.date_of_publication, books.author_id, AVG(reviews.score) as average_score')
+                   .group('books.id')
     end
-  
-    # Recupera los libros usando los IDs guardados en la sesión
-    @books = Book.where(id: session[:top_rated_books_ids])
-                 .joins(:reviews)
-                 .select('books.id, books.name, books.date_of_publication, books.author_id, AVG(reviews.score) as average_score')
-                 .group('books.id')
-  
+
     # Ordena los libros basados en el parámetro de ordenamiento
     case params[:sort]
     when 'average_score'
@@ -99,6 +97,10 @@ class BooksController < ApplicationController
     else
       @books = @books.order('average_score DESC') # Default sorting
     end
+
+    # Log source of query
+    source = Rails.cache.exist?(cache_key) ? "redis" : "database (no cache)"
+    Rails.logger.info "Top rated books data fetched from #{source}"
   end
   
 
