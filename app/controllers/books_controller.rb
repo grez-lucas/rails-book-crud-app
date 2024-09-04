@@ -2,10 +2,10 @@ class BooksController < ApplicationController
   before_action :set_book, only: %i[ show edit update destroy ]
   
   def top_selling
-    session[:top_selling_books_ids] = nil
-    # Verifica si ya tenemos los IDs de los 50 mejores libros en la sesión
-    if session[:top_selling_books_ids].blank?
-      # Selecciona los 50 libros más vendidos
+    cache_key = "top_selling_books"
+
+    @books = Rails.cache.fetch(cache_key, expires_in: 12.hours) do
+      # Select top 50 top-selling books
       top_books_ids = Book.joins(:sales)
                           .select('books.id')
                           .group('books.id')
@@ -13,38 +13,36 @@ class BooksController < ApplicationController
                           .limit(50)
                           .pluck(:id)
 
-      # Guarda los IDs en la sesión
-      session[:top_selling_books_ids] = top_books_ids
-    end
-    # Recupera los libros usando los IDs guardados en la sesión
-    @books = Book.where(id: session[:top_selling_books_ids])
-                 .joins(:sales)
-                 .select('books.id, books.name, books.date_of_publication, books.author_id, SUM(sales.sales) AS total_sales')
-                 .group('books.id, books.name, books.date_of_publication, books.author_id')
+      @books = Book.where(id: top_books_ids)
+                  .joins(:sales)
+                  .select('books.id, books.name, books.date_of_publication, books.author_id, SUM(sales.sales) AS total_sales')
+                  .group('books.id, books.name, books.date_of_publication, books.author_id')
 
-    # Calcula las ventas totales del autor para cada libro
-    @books = @books.map do |book|
-      # Total de ventas del autor
-      total_author_sales = Book.joins(:sales)
-                                .where(author_id: book.author_id)
-                                .group('books.author_id')
-                                .sum('sales.sales')[book.author_id] || 0
+      
+      @books = @books.map do |book|
+        # Total de ventas del autor
+        total_author_sales = Book.joins(:sales)
+                                  .where(author_id: book.author_id)
+                                  .group('books.author_id')
+                                  .sum('sales.sales')[book.author_id] || 0
 
-      # Verifica si el libro estuvo en el top 5 en su año de publicación
-      year_of_publication = book.date_of_publication.year
-      top_5_year_sales = Sale.joins(:book)
-                         .where("EXTRACT(YEAR FROM date_of_publication) = ?", year_of_publication)
-                         .group(:book_id)
-                         .order('SUM(sales.sales) DESC')
-                         .limit(5)
-                         .pluck(:book_id)
+        year_of_publication = book.date_of_publication.year
+        top_5_year_sales = Sale.joins(:book)
+                           .where("EXTRACT(YEAR FROM date_of_publication) = ?", year_of_publication)
+                           .group(:book_id)
+                           .order('SUM(sales.sales) DESC')
+                           .limit(5)
+                           .pluck(:book_id)
 
 
-      book.attributes.merge(
-        'total_sales' => book.total_sales,
-        'total_author_sales' => total_author_sales,
-        'top_5_year_sales' => top_5_year_sales.include?(book.id)
-      )
+        book.attributes.merge(
+          'total_sales' => book.total_sales,
+          'total_author_sales' => total_author_sales,
+          'top_5_year_sales' => top_5_year_sales.include?(book.id)
+        )
+      end
+
+      @books.sort_by! { |b| -b['total_sales']}
     end
 
     # Ordena los libros según el parámetro de sort
@@ -63,13 +61,11 @@ class BooksController < ApplicationController
 
     # Paginación
     @books = Kaminari.paginate_array(@books).page(params[:page]).per(10)
+
+    # Log source of query
+    source = Rails.cache.exist?(cache_key) ? "redis" : "database (no cache)"
+    Rails.logger.info "Top selling data fetched from #{source}"
   end
-  
-  
-  
-  
-  
-  
   
   def top_rated
     # Verifica si ya tenemos los IDs de los 10 mejores libros en la sesión
