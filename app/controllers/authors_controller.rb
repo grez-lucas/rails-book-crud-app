@@ -1,30 +1,30 @@
 class AuthorsController < ApplicationController
-  before_action :set_author, only: %i[ show edit update destroy ]
+  before_action :set_author, only: %i[show edit update destroy]
+  after_action :invalidate_author_cache, only: %i[update destroy]
 
-  # GET /authors or /authors.json
+  # GET /authors or /@authors.json
   def index
     @authors = Author.all
+
     # Filtering
-    if params[:name].present?
-      @authors = @authors.where("name ILIKE ?", "%#{params[:name]}%")
-    end  
+    @authors = @authors.where('name ILIKE ?', "%#{params[:name]}%") if params[:name].present?
     if params[:books_count].present?
       @authors = @authors.left_joins(:books).group(:id)
-                         .having("COUNT(books.id) >= ?", params[:books_count].to_i)
+                        .having('COUNT(books.id) >= ?', params[:books_count].to_i)
     end
     if params[:average_score].present?
       @authors = @authors.left_joins(books: :reviews).group(:id)
-                         .having("AVG(reviews.score) >= ?", params[:average_score].to_f)
+                        .having('AVG(reviews.score) >= ?', params[:average_score].to_f)
     end
     if params[:total_sales].present?
       @authors = @authors.left_joins(books: :sales).group(:id)
-                         .having("SUM(sales.sales) >= ?", params[:total_sales].to_i)
+                        .having('SUM(sales.sales) >= ?', params[:total_sales].to_i)
     end
     if params[:date_of_birth].present?
-      @authors = @authors.where("EXTRACT(YEAR FROM date_of_birth) >= ?", params[:date_of_birth].to_i)
+      @authors = @authors.where('EXTRACT(YEAR FROM date_of_birth) >= ?', params[:date_of_birth].to_i)
     end
     if params[:country_of_origin].present?
-      @authors = @authors.where("country_of_origin ILIKE ?", "%#{params[:country_of_origin]}%")
+      @authors = @authors.where('country_of_origin ILIKE ?', "%#{params[:country_of_origin]}%")
     end
 
     case params[:sort]
@@ -43,20 +43,19 @@ class AuthorsController < ApplicationController
 
   # GET /authors/1 or /authors/1.json
   def show
-    @author = Author.find(params[:id])
+    author_cache_key = "author_#{params[:id]}_details"
 
-    # Calcula el número de libros publicados
-    @book_count = @author.books.count
+    author_data = Rails.cache.fetch(author_cache_key, expires_in: 12.hours) do
+      data = fetch_author_data
+      data
+    end
 
-    # Calcula la puntuación promedio de los libros del autor
-    @average_score = @author.books.joins(:reviews)
-                                .average('reviews.score')
-                                .to_f
-    @average_score = @average_score.nan? ? 0 : @average_score
+    @book_count = author_data[:book_count].to_i
+    @average_score = author_data[:average_score]
+    @total_sales = author_data[:total_sales]
 
-    # Calcula las ventas totales de los libros del autor
-    @total_sales = @author.books.joins(:sales)
-                              .sum('sales.sales')
+    source = Rails.cache.exist?(author_cache_key) ? "redis" : "database (no cache)"
+    Rails.logger.info "Author data fetched from #{source}"
   end
 
   # GET /authors/new
@@ -68,14 +67,14 @@ class AuthorsController < ApplicationController
   def edit
   end
 
-  # POST /authors or /authors.json
+  # POST /authors or /@authors.json
   def create
     @author = Author.new(author_params)
 
     respond_to do |format|
       if @author.save
-        format.html { redirect_to author_url(@author), notice: "Author was successfully created." }
-        format.json { render :show, status: :created, location: @author }
+        format.html { redirect_to author_url(author), notice: 'Author was successfully created.' }
+        format.json { render :show, status: :created, location: author }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @author.errors, status: :unprocessable_entity }
@@ -87,8 +86,8 @@ class AuthorsController < ApplicationController
   def update
     respond_to do |format|
       if @author.update(author_params)
-        format.html { redirect_to author_url(@author), notice: "Author was successfully updated." }
-        format.json { render :show, status: :ok, location: @author }
+        format.html { redirect_to author_url(author), notice: 'Author was successfully updated.' }
+        format.json { render :show, status: :ok, location: author }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @author.errors, status: :unprocessable_entity }
@@ -101,19 +100,42 @@ class AuthorsController < ApplicationController
     @author.destroy!
 
     respond_to do |format|
-      format.html { redirect_to authors_url, notice: "Author was successfully destroyed." }
+      format.html { redirect_to @authors_url, notice: 'Author was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_author
-      @author = Author.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def author_params
-      params.require(:author).permit(:name, :date_of_birth, :country_of_origin, :short_description)
-    end
+  def fetch_author_data
+    {
+      author: @author.attributes,
+      book_count: @author.books.count,
+      average_score: calculate_average_score,
+      total_sales: calculate_total_sales
+    }
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_author
+    @author = Author.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def author_params
+    params.require(:author).permit(:name, :date_of_birth, :country_of_origin, :short_description)
+  end
+
+  def calculate_average_score
+    average_score = @author.books.joins(:reviews).average('reviews.score').to_f
+    average_score.nan? ? 0 : average_score
+  end
+
+  def calculate_total_sales
+    @author.books.joins(:sales).sum('sales.sales')
+  end
+
+  def invalidate_author_cache
+    Rails.cache.delete("author_#{params[:id]}_details") # Rails.cache handles the case where no cache is found
+  end
 end
