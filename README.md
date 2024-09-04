@@ -5,7 +5,7 @@ This is a simple RoR app for CRUD operations with a PostgreSQL server. For local
 
 # Super Fast Docker-Compose Setup
 
-If you wish to get the app runnig with as little commands as possible run:
+If you wish to get the base app running with as little commands as possible run:
 
 ```bash
 docker compose up
@@ -16,6 +16,39 @@ Seeding might take a while, please be patient.
 To get the `app` and `db` services running. Then simply access `localhost:3000` to view the app.
 
 To remove images and stop containers, run:
+
+### Assignment 3 Docker-Compose files
+
+#### Application + Database
+
+```bash
+docker compose -f docker-compose.yml
+```
+
+#### Application + Database + Cache
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.redis.yml up
+```
+
+#### Application + Database + Search Engine
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.search-engine.yml up
+```
+#### Application + Database + Reverse Proxy
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.reverse-proxy.yml up
+```
+#### Application + Database + Cache + Search Engine + Reverse Proxy
+
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.redis.yml -f docker-compose.search-engine.yml -f docker-compose.reverse-proxy.yml up
+```
+
+### Clean up docker images
 
 ```bash
 docker compose down
