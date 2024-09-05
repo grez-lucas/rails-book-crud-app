@@ -6,6 +6,9 @@ services:
 
       # Host mount for one-time initialization
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+      # For hot reload
+      - .:/app
     environment:
       POSTGRES_USER: postgres 
       POSTGRES_PASSWORD: postgres
