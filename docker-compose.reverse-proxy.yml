@@ -4,6 +4,9 @@ services:
       ports:
         - "80:80"  
       volumes:
-        - ./apache-config:/usr/local/apache2/conf/ #Donde mi archivo .conf está guardado
+          # This is were our apache-config file resides in the repo
+          # Local-apache-config:container-apache-config
+        - ./apache-config/httpd.conf:/usr/local/apache2/conf/httpd/conf/httpd.conf
+        - ./apache-config/logs:/usr/local/apache2/logs
       extra_hosts:
         - "app.localhost:127.0.0.1"
