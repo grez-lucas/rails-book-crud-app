@@ -76,4 +76,11 @@ Rails.application.configure do
 
   # Redis cache store configuration
   config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
+
+  
+  # Configure hot reload
+  config.web_console.whitelisted_ips = '0.0.0.0/0'
+  config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+  config.file_watcher = ActiveSupport::FileUpdateChecker
+  config.reload_classes_only_on_change = false
 end
