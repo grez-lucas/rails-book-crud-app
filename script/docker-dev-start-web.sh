@@ -21,4 +21,6 @@ bin/rails db:fixtures:load
 
 bin/rails db:seed
 
+bin/rails assets:precompile
+
 bin/rails server --port 3000 --binding 0.0.0.0
