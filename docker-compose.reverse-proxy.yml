@@ -1,0 +1,9 @@
+services:
+  apache:
+      image: httpd:latest
+      ports:
+        - "80:80"  
+      volumes:
+        - ./apache-config:/usr/local/apache2/conf/ #Donde mi archivo .conf está guardado
+      extra_hosts:
+        - "app.localhost:127.0.0.1"
