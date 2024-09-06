@@ -39,7 +39,7 @@ docker compose -f docker-compose.yml -f docker-compose.search-engine.yml up
 #### Application + Database + Reverse Proxy
 
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.reverse-proxy.yml up
+docker compose -f docker-compose.reverse-proxy.yml up
 ```
 #### Application + Database + Cache + Search Engine + Reverse Proxy
 

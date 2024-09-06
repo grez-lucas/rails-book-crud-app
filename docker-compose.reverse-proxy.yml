@@ -1,12 +1,56 @@
 services:
   apache:
+      # build: ./apache-config
       image: httpd:latest
       ports:
         - "80:80"  
+        - "3000:3000"
       volumes:
           # This is were our apache-config file resides in the repo
           # Local-apache-config:container-apache-config
-        - ./apache-config/httpd.conf:/usr/local/apache2/conf/httpd/conf/httpd.conf
+        - ./apache-config/httpd.conf:/usr/local/apache2/conf/httpd.conf
         - ./apache-config/logs:/usr/local/apache2/logs
-      extra_hosts:
-        - "app.localhost:127.0.0.1"
+      networks:
+          - book_crud_network
+  db:
+    image: postgres:14
+    volumes:
+      - db_pg_data:/var/lib/postgresql/data
+
+      # Host mount for one-time initialization
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+      # For hot reload
+      - .:/app
+    environment:
+      POSTGRES_USER: postgres 
+      POSTGRES_PASSWORD: postgres
+      DATABASE_NAME: rails_book_crud_app_development
+      DATABASE_HOST: db
+    ports:
+      - "5432:5432"
+    networks:
+        - book_crud_network
+
+  web:
+    build: .
+    command: script/docker-dev-start-web.sh
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/rails_book_crud_app_development
+      REDIS_URL: redis://redis:6379/0
+    tty: true
+    stdin_open: true
+    networks:
+        - book_crud_network
+
+volumes:
+  db_pg_data:
+
+networks:
+  book_crud_network:
+    driver: bridge
+

@@ -16,6 +16,8 @@ services:
       DATABASE_HOST: db
     ports:
       - "5432:5432"
+    networks:
+        - book_crud_network
 
   web:
     build: .
@@ -31,6 +33,12 @@ services:
       REDIS_URL: redis://redis:6379/0
     tty: true
     stdin_open: true
+    networks:
+        - book_crud_network
 
 volumes:
   db_pg_data:
+
+networks:
+  book_crud_network:
+    driver: bridge
