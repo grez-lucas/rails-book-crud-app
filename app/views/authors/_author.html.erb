@@ -1,28 +1,35 @@
 <div id="<%= dom_id author %>">
   <h1><%= author.name %></h1>
-<p><strong>Date of Birth:</strong> <%= author.date_of_birth %></p>
-<p><strong>Country of Origin:</strong> <%= author.country_of_origin %></p>
-<p><strong>Description:</strong> <%= author.short_description %></p>
 
-<h2>Author Statistics</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Number of Published Books</th>
-      <th>Average Book Score</th>
-      <th>Total Sales</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><%= @book_count %></td>
-      <td><%= @average_score == nil ? 0 : @average_score.round(1) %></td>
-      <td><%= number_to_currency(@total_sales) %></td>
-    </tr>
-  </tbody>
-</table>
+  <div>
+    <% if author.image.present? %>
+      <%= image_tag author.image, size: "100x100" %>
+    <% else %>
+      <%= image_tag 'no_user_img_available.jpg', size: "100x100" %>
+    <% end %>
+  </div>
 
-<%= link_to 'Back to Authors', authors_path %>
+  <p><strong>Date of Birth:</strong> <%= author.date_of_birth %></p>
+  <p><strong>Country of Origin:</strong> <%= author.country_of_origin %></p>
+  <p><strong>Description:</strong> <%= author.short_description %></p>
 
+  <h2>Author Statistics</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Number of Published Books</th>
+        <th>Average Book Score</th>
+        <th>Total Sales</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= @book_count %></td>
+        <td><%= @average_score == nil ? 0 : @average_score.round(1) %></td>
+        <td><%= number_to_currency(@total_sales) %></td>
+      </tr>
+    </tbody>
+  </table>
 
+  <%= link_to 'Back to Authors', authors_path %>
 </div>

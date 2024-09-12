@@ -8,7 +8,11 @@
     <strong>Name:</strong>
     <%= book.name %>
   </p>
-
+  <% if @book.cover.attached? %>
+    <%= image_tag url_for(@book.cover), alt: @book.name, size: "400x400" %>
+  <% else %>
+    <p>No cover image available</p>
+  <% end %>
   <p>
     <strong>Summary:</strong>
     <%= book.summary %>
