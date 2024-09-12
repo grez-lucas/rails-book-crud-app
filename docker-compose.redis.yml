@@ -3,3 +3,10 @@ services:
     image: redis:alpine
     ports:
       - "6379:6379"
+
+    networks:
+        - book_crud_network
+
+networks:
+  book_crud_network:
+    driver: bridge

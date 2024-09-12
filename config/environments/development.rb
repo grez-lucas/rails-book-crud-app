@@ -74,6 +74,8 @@ Rails.application.configure do
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
 
+  config.public_file_server.enabled = ENV['SERVE_STATIC_ASSETS'] != 'true'
+  
   # Redis cache store configuration
   config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
 

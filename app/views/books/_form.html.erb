@@ -36,6 +36,11 @@
     <%= form.number_field :number_of_sales %>
   </div>
 
+  <div class="field">
+    <%= form.label :cover, "Upload Book Cover" %>
+    <%= form.file_field :cover %>
+  </div>
+
   <div>
     <%= form.submit %>
   </div>

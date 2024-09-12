@@ -70,17 +70,26 @@ class AuthorsController < ApplicationController
   # POST /authors or /@authors.json
   def create
     @author = Author.new(author_params)
-
+  
+    if author_params[:image].present?
+      # Attach the image using ActiveStorage
+      image = author_params[:image]
+      @author.image.attach(image)
+      
+      # Save the image path or ActiveStorage URL
+      #@author.image_path = url_for(@author.image) if @author.image.attached?
+    end
+  
     respond_to do |format|
       if @author.save
-        format.html { redirect_to author_url(author), notice: 'Author was successfully created.' }
-        format.json { render :show, status: :created, location: author }
+        format.html { redirect_to author_url(@author), notice: 'Author was successfully created.' }
+        format.json { render :show, status: :created, location: @author }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @author.errors, status: :unprocessable_entity }
       end
     end
-  end
+  end  
 
   # PATCH/PUT /authors/1 or /authors/1.json
   def update
@@ -123,8 +132,8 @@ class AuthorsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def author_params
-    params.require(:author).permit(:name, :date_of_birth, :country_of_origin, :short_description)
-  end
+    params.require(:author).permit(:name, :date_of_birth, :country_of_origin, :short_description, :image, :image_path)
+  end  
 
   def calculate_average_score
     average_score = @author.books.joins(:reviews).average('reviews.score').to_f
@@ -137,5 +146,18 @@ class AuthorsController < ApplicationController
 
   def invalidate_author_cache
     Rails.cache.delete("author_#{params[:id]}_details") # Rails.cache handles the case where no cache is found
+  end
+
+  def save_uploaded_file(uploaded_file)
+    Dir.mkdir(Rails.root.join('uploads')) unless Dir.exist?(Rails.root.join('uploads'))
+    
+    file_name = "#{SecureRandom.uuid}_#{uploaded_file.original_filename}"
+    file_path = Rails.root.join('uploads', file_name)
+    
+    File.open(file_path, 'wb') do |file|
+      file.write(uploaded_file.read)
+    end
+
+    "/uploads/#{file_name}"
   end
 end

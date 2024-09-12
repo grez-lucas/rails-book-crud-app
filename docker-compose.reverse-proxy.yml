@@ -1,4 +1,18 @@
 services:
+  apache:
+      # build: ./apache-config
+      image: httpd:latest
+      ports:
+        - "80:80"  
+        - "3000:3000"
+      volumes:
+          # This is were our apache-config file resides in the repo
+          # Local-apache-config:container-apache-config
+        - ./apache-config/httpd.conf:/usr/local/apache2/conf/httpd.conf
+        - ./apache-config/logs:/usr/local/apache2/logs
+        - ./uploads:/app/uploads 
+      networks:
+          - book_crud_network
   db:
     image: postgres:14
     volumes:
@@ -24,13 +38,12 @@ services:
     command: script/docker-dev-start-web.sh
     volumes:
       - .:/app
-    ports:
-      - "3000:3000"
     depends_on:
       - db
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/rails_book_crud_app_development
       REDIS_URL: redis://redis:6379/0
+      SERVE_STATIC_ASSETS: "false"
     tty: true
     stdin_open: true
     networks:
@@ -42,3 +55,4 @@ volumes:
 networks:
   book_crud_network:
     driver: bridge
+

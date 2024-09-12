@@ -1,0 +1,61 @@
+[Fri Sep 06 19:51:34.155706 2024] [core:crit] [pid 1:tid 1] AH00136: Server MUST relinquish startup privileges before accepting connections.  Please ensure mod_unixd or other system security module is loaded.
+AH00016: Configuration Failed
+[Fri Sep 06 19:52:44.845368 2024] [core:crit] [pid 1:tid 1] AH00136: Server MUST relinquish startup privileges before accepting connections.  Please ensure mod_unixd or other system security module is loaded.
+AH00016: Configuration Failed
+[Fri Sep 06 19:54:04.540919 2024] [core:crit] [pid 1:tid 1] AH00136: Server MUST relinquish startup privileges before accepting connections.  Please ensure mod_unixd or other system security module is loaded.
+AH00016: Configuration Failed
+[Fri Sep 06 19:55:45.677229 2024] [core:crit] [pid 1:tid 1] AH00136: Server MUST relinquish startup privileges before accepting connections.  Please ensure mod_unixd or other system security module is loaded.
+AH00016: Configuration Failed
+[Fri Sep 06 19:57:34.343014 2024] [core:crit] [pid 1:tid 1] AH00136: Server MUST relinquish startup privileges before accepting connections.  Please ensure mod_unixd or other system security module is loaded.
+AH00016: Configuration Failed
+[Fri Sep 06 19:58:57.967745 2024] [core:crit] [pid 1:tid 1] AH00136: Server MUST relinquish startup privileges before accepting connections.  Please ensure mod_unixd or other system security module is loaded.
+AH00016: Configuration Failed
+[Fri Sep 06 19:59:37.007634 2024] [core:crit] [pid 1:tid 1] AH00136: Server MUST relinquish startup privileges before accepting connections.  Please ensure mod_unixd or other system security module is loaded.
+AH00016: Configuration Failed
+[Fri Sep 06 20:06:11.476260 2024] [core:crit] [pid 1:tid 1] AH00136: Server MUST relinquish startup privileges before accepting connections.  Please ensure mod_unixd or other system security module is loaded.
+AH00016: Configuration Failed
+[Fri Sep 06 20:49:01.521338 2024] [core:crit] [pid 1:tid 1] AH00136: Server MUST relinquish startup privileges before accepting connections.  Please ensure mod_unixd or other system security module is loaded.
+AH00016: Configuration Failed
+[Fri Sep 06 20:50:01.622819 2024] [core:crit] [pid 1:tid 1] AH00136: Server MUST relinquish startup privileges before accepting connections.  Please ensure mod_unixd or other system security module is loaded.
+AH00016: Configuration Failed
+[Fri Sep 06 21:01:52.401666 2024] [mpm_event:notice] [pid 1:tid 1] AH00489: Apache/2.4.62 (Unix) configured -- resuming normal operations
+[Fri Sep 06 21:01:52.401801 2024] [core:notice] [pid 1:tid 1] AH00094: Command line: 'httpd -D FOREGROUND'
+[Fri Sep 06 21:01:52.401833 2024] [unixd:alert] [pid 9:tid 9] AH02155: getpwuid: couldn't determine user name from uid 4294967295, you probably need to modify the User directive
+[Fri Sep 06 21:01:52.402183 2024] [unixd:alert] [pid 8:tid 8] AH02155: getpwuid: couldn't determine user name from uid 4294967295, you probably need to modify the User directive
+[Fri Sep 06 21:01:52.404418 2024] [unixd:alert] [pid 10:tid 10] AH02155: getpwuid: couldn't determine user name from uid 4294967295, you probably need to modify the User directive
+[Fri Sep 06 21:02:22.875460 2024] [core:crit] [pid 9:tid 12] [client 172.19.0.1:50942] AH00025: configuration error:  couldn't check user: /
+[Fri Sep 06 21:04:25.128554 2024] [mpm_event:notice] [pid 1:tid 1] AH00492: caught SIGWINCH, shutting down gracefully
+[Fri Sep 06 21:04:39.942809 2024] [mpm_event:notice] [pid 1:tid 1] AH00489: Apache/2.4.62 (Unix) configured -- resuming normal operations
+[Fri Sep 06 21:04:39.942880 2024] [unixd:alert] [pid 8:tid 8] AH02155: getpwuid: couldn't determine user name from uid 4294967295, you probably need to modify the User directive
+[Fri Sep 06 21:04:39.942905 2024] [unixd:alert] [pid 9:tid 9] AH02155: getpwuid: couldn't determine user name from uid 4294967295, you probably need to modify the User directive
+[Fri Sep 06 21:04:39.942984 2024] [core:notice] [pid 1:tid 1] AH00094: Command line: 'httpd -D FOREGROUND'
+[Fri Sep 06 21:04:39.943150 2024] [unixd:alert] [pid 10:tid 10] AH02155: getpwuid: couldn't determine user name from uid 4294967295, you probably need to modify the User directive
+[Fri Sep 06 21:05:14.602701 2024] [core:crit] [pid 10:tid 14] [client 172.19.0.1:51152] AH00025: configuration error:  couldn't check user: /
+[Fri Sep 06 21:06:11.869378 2024] [mpm_event:notice] [pid 1:tid 1] AH00492: caught SIGWINCH, shutting down gracefully
+[Fri Sep 06 21:06:25.889041 2024] [mpm_event:notice] [pid 1:tid 1] AH00489: Apache/2.4.62 (Unix) configured -- resuming normal operations
+[Fri Sep 06 21:06:25.889684 2024] [core:notice] [pid 1:tid 1] AH00094: Command line: 'httpd -D FOREGROUND'
+[Fri Sep 06 21:06:54.171121 2024] [core:crit] [pid 10:tid 35] [client 172.19.0.1:55690] AH00025: configuration error:  couldn't check user: /
+[Fri Sep 06 21:07:03.204984 2024] [core:crit] [pid 10:tid 37] [client 172.19.0.1:55702] AH00025: configuration error:  couldn't check user: /
+[Fri Sep 06 21:10:36.351330 2024] [mpm_event:notice] [pid 1:tid 1] AH00492: caught SIGWINCH, shutting down gracefully
+[Fri Sep 06 21:10:50.681259 2024] [mpm_event:notice] [pid 1:tid 1] AH00489: Apache/2.4.62 (Unix) configured -- resuming normal operations
+[Fri Sep 06 21:10:50.681771 2024] [core:notice] [pid 1:tid 1] AH00094: Command line: 'httpd -D FOREGROUND'
+[Fri Sep 06 21:11:20.048738 2024] [core:crit] [pid 10:tid 29] [client 172.19.0.1:39786] AH00025: configuration error:  couldn't check user: /
+[Fri Sep 06 21:14:31.022081 2024] [mpm_event:notice] [pid 1:tid 1] AH00492: caught SIGWINCH, shutting down gracefully
+[Fri Sep 06 21:14:57.791811 2024] [mpm_event:notice] [pid 1:tid 1] AH00489: Apache/2.4.62 (Unix) configured -- resuming normal operations
+[Fri Sep 06 21:14:57.791944 2024] [core:notice] [pid 1:tid 1] AH00094: Command line: 'httpd -D FOREGROUND'
+[Fri Sep 06 21:15:19.435563 2024] [core:crit] [pid 10:tid 29] [client 172.19.0.1:47222] AH00025: configuration error:  couldn't check user: /
+[Fri Sep 06 21:19:41.861200 2024] [core:crit] [pid 8:tid 16] [client 172.19.0.1:53726] AH00025: configuration error:  couldn't check user: /
+[Fri Sep 06 21:19:42.689457 2024] [core:crit] [pid 10:tid 32] [client 172.19.0.1:53738] AH00025: configuration error:  couldn't check user: /
+[Fri Sep 06 21:21:12.185346 2024] [core:crit] [pid 10:tid 27] [client 172.19.0.1:57668] AH00025: configuration error:  couldn't check user: /
+[Fri Sep 06 21:21:12.977153 2024] [core:crit] [pid 10:tid 37] [client 172.19.0.1:57674] AH00025: configuration error:  couldn't check user: /
+[Fri Sep 06 21:22:05.545439 2024] [mpm_event:notice] [pid 1:tid 1] AH00492: caught SIGWINCH, shutting down gracefully
+[Fri Sep 06 21:24:53.701605 2024] [mpm_event:notice] [pid 1:tid 1] AH00489: Apache/2.4.62 (Unix) configured -- resuming normal operations
+[Fri Sep 06 21:24:53.703816 2024] [core:notice] [pid 1:tid 1] AH00094: Command line: 'httpd -D FOREGROUND'
+[Fri Sep 06 21:25:00.672217 2024] [core:crit] [pid 10:tid 24] [client 172.19.0.1:35222] AH00025: configuration error:  couldn't check user: /
+[Fri Sep 06 21:25:22.203725 2024] [mpm_event:notice] [pid 1:tid 1] AH00492: caught SIGWINCH, shutting down gracefully
+[Fri Sep 06 21:25:41.865464 2024] [mpm_event:notice] [pid 1:tid 1] AH00489: Apache/2.4.62 (Unix) configured -- resuming normal operations
+[Fri Sep 06 21:25:41.865607 2024] [core:notice] [pid 1:tid 1] AH00094: Command line: 'httpd -D FOREGROUND'
+[Fri Sep 06 21:28:19.162717 2024] [mpm_event:notice] [pid 1:tid 1] AH00492: caught SIGWINCH, shutting down gracefully
+[Fri Sep 06 21:28:34.461490 2024] [mpm_event:notice] [pid 1:tid 1] AH00489: Apache/2.4.62 (Unix) configured -- resuming normal operations
+[Fri Sep 06 21:28:34.461625 2024] [core:notice] [pid 1:tid 1] AH00094: Command line: 'httpd -D FOREGROUND'
+[Fri Sep 06 21:31:58.536322 2024] [mpm_event:notice] [pid 1:tid 1] AH00492: caught SIGWINCH, shutting down gracefully
