@@ -31,7 +31,7 @@ docker compose -f docker-compose.yml
 docker compose -f docker-compose.yml -f docker-compose.redis.yml up
 ```
 
-#### Application + Database + Search Engine
+#### Application + Database + Search Engine (Not Working)
 
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.search-engine.yml up
@@ -47,7 +47,12 @@ docker compose -f docker-compose.reverse-proxy.yml up
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.redis.yml -f docker-compose.search-engine.yml -f docker-compose.reverse-proxy.yml up
 ```
+#### Application + Database + Cache + Reverse Proxy (Working)
 
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.redis.yml -f docker-compose.reverse-proxy.yml up
+```
 ### Clean up docker images
 
 ```bash
