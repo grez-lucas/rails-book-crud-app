@@ -51,7 +51,7 @@ docker compose -f docker-compose.yml -f docker-compose.redis.yml -f docker-compo
 
 
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.redis.yml -f docker-compose.reverse-proxy.yml up
+docker compose -f docker-compose.redis.yml -f docker-compose.reverse-proxy.yml up
 ```
 ### Clean up docker images
 
